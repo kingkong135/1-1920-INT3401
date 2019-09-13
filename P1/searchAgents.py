@@ -384,8 +384,6 @@ def cornersHeuristic(state, problem):
         return 0
 
     val = [0]
-    print(state[0])
-    print(state[1])
     for s in state[1]:
         val.append(abs(s[0] - state[0][0]) + abs(s[1] - state[0][1]))
 
