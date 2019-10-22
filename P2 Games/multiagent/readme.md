@@ -1,65 +1,54 @@
-* This is my assignment on Andrew Ng's special course  "[***Deep Learning Specialization***](https://www.coursera.org/specializations/deep-learning)" This course consists of five courses: 
-    * [***Neural Networks and Deep Learning***](https://www.coursera.org/learn/neural-networks-deep-learning/home/welcome)  
-    * [***Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization***](https://www.coursera.org/learn/deep-neural-network/home/welcome) 
-    * [***Structuring Machine Learning Projects***](https://www.coursera.org/learn/machine-learning-projects/home/welcome)
-    * [***Convolutional Neural Networks***](https://www.coursera.org/learn/convolutional-neural-networks)
-    * [***Sequence Models***](https://www.coursera.org/learn/nlp-sequence-models)
+Đây là "[***Project 2: Multi-Agent Search***](https://inst.eecs.berkeley.edu/~cs188/su19/project2/)". Gồm 5 câu hỏi:
+* "[***Question 1 (4 points): Reflex Agent***](https://inst.eecs.berkeley.edu/~cs188/su19/project2/#question-1-4-points-reflex-agent)" 
 
-![Neural Networks for Machine Learning](https://user-images.githubusercontent.com/21110541/29741101-6c274534-8a66-11e7-9e69-d3f2a362af8d.png)
+   Viết hàm đánh giá evaluationFunction trả về số điểm nếu pacman đi vào vị trí đó, ở trong câu hỏi này là bản đồ đơn giản.
+   
+   Cách làm:
+   - Tìm khoảng cách gần nhât giữa pacman đến con ma gần nhất và khoảng cách gẫn nhất từ pacman đến thưc ăn gần nhất. Khởi tạo cả 2 là vô cùng (1000).
+   - Hàm trả về giá trị successorGameState.getScore() - 20 / (nearestGhostDistance + 1) + 5 / (nearestFoodDistance + 1)
+   
+  "[***Code câu hỏi thứ 1 tại đây***](https://github.com/kingkong135/1-1920-INT3401/blob/2d976fac77a7762e7195bbd11085956b0da82a30/P2%20Games/multiagent/multiAgents.py#L79)" 
+   
+* "[***Question 2 (5 points): Minimax***](https://inst.eecs.berkeley.edu/~cs188/su19/project2/#question-2-5-points-minimax)" 
 
-![Improving Deep Neural Networks_Hyperparameter Tuning_Regularization and Optimization](https://user-images.githubusercontent.com/21110541/30242116-bd3cb3b6-9590-11e7-9621-aa30536d1a35.PNG)
+   Triển khai thuật toán Minimax.
+   
+   Cách làm:
+   - Khơi tạo biến global bestAction là hoạt động tốt nhất
+   - Sẽ dùng đệ quy viết hàm minimax(player, depth, isPac, state). Với player là số thứ tự player, 0 là pacman, 1,2 là ma; depth là độ sâu của cây tìm kiếm, isPac xem có phải là pacman không, state là trạng thái hiện tại
+   - Trạng thái kết thúc nếu depth = 0 hoặc state.isWin() hoặc    state.isLose()
+   - Nếu là Pacman: khởi tạo score = -10000, xét các hoạt động tiếp theo của pacman. Với mỗi hoạt động thì ta sẽ gọi v = minimax(nextPlayer, depth, False, newState) là số điểm của con ma tiếp theo, sẽ có cùng độ sâu. trả lai action nếu v > score và depth = self.depth. Cập nhật lai score = max(v, score). Vì Pacman sẽ tìm max khoảng cách giữa nó và các con ma.
+   - Nếu là ma: thì sẽ làm ngược lại. Khởi tọa score = -10000, xác định các trạng thai tiếp theo của playeer tiếp theo. sẽ cập nhật lại độ sâu nếu người chơi tiếp theo là pacman nếu không thì giữ nguyên độ sâu. Gọi đệ quy v = minimax(nextPlayer, tempPly, isPac, newState). và cập nhật lại score = min(score, v). Vì các con ma sẽ min khoảng cách giữa nó và các con ma.
+   - Băt đầu chạy minimax(0, self.depth, True, gameState)
+   
+  "[***Code câu hỏi thứ 2 tại đây***](https://github.com/kingkong135/1-1920-INT3401/blob/2d976fac77a7762e7195bbd11085956b0da82a30/P2%20Games/multiagent/multiAgents.py#L155)"
+   
+ * "[***Question 3 (5 points): Alpha-Beta Pruning***](https://inst.eecs.berkeley.edu/~cs188/su19/project2/#question-3-5-points-alpha-beta-pruning)" 
 
-![structuring machine learning projects](https://user-images.githubusercontent.com/21110541/30242472-5662a950-9597-11e7-9766-dc1c5816cde2.PNG)
+   Triển khai thuật toán Alplha-Beta pruning để tỉa cây tìm kiếm ở thuật toán Minimax với alpha là giá trị max tốt nhất và beta là giá trị min tốt nhất.
+   
+   Cách làm:
+   - Tương tự như câu hỏi thứ 2 nhưng sẽ thêm tham số anlpha và beta
+   - Các thực hiện dựa trên mã giả trong bài giảng "[***Link***](https://inst.eecs.berkeley.edu/~cs188/su19/assets/images/alpha_beta_impl.png)"
+  
+  "[***Code câu hỏi thứ 3 tại đây***](https://github.com/kingkong135/1-1920-INT3401/blob/2d976fac77a7762e7195bbd11085956b0da82a30/P2%20Games/multiagent/multiAgents.py#L188)"
+   
+* "[***Question 4 (5 points): Expectimax***](https://inst.eecs.berkeley.edu/~cs188/su19/project2/#question-4-5-points-expectimax)" 
 
-![convolutional neural networks](https://user-images.githubusercontent.com/21110541/32508421-8cbe3448-c3ea-11e7-8743-e55c878ba0a7.PNG)
+   Minimax và alpha-beta là tuyệt vời, nhưng cả hai đều cho rằng bạn đang chơi với một kẻ thù đưa ra quyết định tối ưu. Như bất cứ ai đã từng giành được tic-tac-toe đều có thể nói với bạn, điều này không phải lúc nào cũng đúng. Trong câu hỏi này, bạn sẽ thực hiện **ExpectimaxAgent**, rất hữu ích cho việc mô hình hóa hành vi xác suất của các tác nhân có thể đưa ra lựa chọn dưới mức tối ưu. Hay còn gọi là thuật toán tối ưu mong đợi
+   
+   Cách làm:
+   - Tương tự như thuật toan thứ 2 nhưng thay vì tim min khi người chơi là ma, thì sẽ tính trung bình score các hành động 
+   
+  "[***Code câu hỏi thứ 4 tại đây***](https://github.com/kingkong135/1-1920-INT3401/blob/2d976fac77a7762e7195bbd11085956b0da82a30/P2%20Games/multiagent/multiAgents.py#L239)"
+   
+* "[***Question 5 (6 points): Evaluation Function***](https://inst.eecs.berkeley.edu/~cs188/su19/project2/#question-5-6-points-evaluation-function)" 
 
-![sequence models](https://user-images.githubusercontent.com/21110541/36073520-35d04bc6-0f58-11e8-8f2e-a5c0c0752ae7.PNG)
-
-# Deep Learning
-+ [x] Neural Networks and Deep Learning
-+ [x] Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization
-+ [x] Structuring Machine Learning Projects
-+ [x] Convolutional Neural Networks
-+ [x] Sequence Models
-
-# Deep Learning - deeplearning.ai
-Coursera Deep Learning Course by deeplearning.ai projects 
-
- ## Course 1. Neural Networks and Deep Learning
-1. Week1 - Introduction to deep learning
-2. Week2 - Neural Networks Basics
-3. Week3 - Shallow neural networks
-4. Week4 - Deep Neural Networks
-
-## Course 2. Improving Deep Neural Networks Hyperparameter tuning, Regularization and Optimization
-1. Week1 - Practical aspects of Deep Learning
-         - Setting up your Machine Learning Application
-         - Regularizing your neural network
-         - Setting up your optimization problem
-2. Week2 - Optimization algorithms
-3. Week3 - Hyperparameter tuning, Batch Normalization and Programming Frameworks
-
-## Course 3. Structuring Machine Learning Projects
-1. Week1 - Introduction to ML Strategy
-         - Setting up your goal
-         - Comparing to human-level performance
-2. Week2 - ML Strategy (2)
-         - Error Analysis
-         - Mismatched training and dev/test set
-         - Learning from multiple tasks
-         - End-to-end deep learning
-         
- ## Course 4. Convolutional Neural Networks
- 1. Week1 - Foundations of Convolutional Neural Networks
- 2. Week2 - Deep convolutional models: case studies
- 3. Week3 - Object detection - Papers for read: [You Only Look Once:
-Unified, Real-Time Object Detection](https://arxiv.org/pdf/1506.02640.pdf), [YOLO](https://arxiv.org/pdf/1612.08242.pdf)
- 4. Week4 - Special applications: Face recognition & Neural style transfer - Papers for read: [DeepFace](https://www.cs.toronto.edu/~ranzato/publications/taigman_cvpr14.pdf), [FaceNet](https://www.cv-foundation.org/openaccess/content_cvpr_2015/papers/Schroff_FaceNet_A_Unified_2015_CVPR_paper.pdf)
- 
- ## Course 5. Sequence Models
- 1. Week1 - Recurrent Neural Networks
- 2. Week2 - Natural Language Processing & Word Embeddings
- 3. Week3 - Sequence models & Attention mechanism
-
----
-*source from **Andrew Ng**'s [Deep learning](https://www.coursera.org/specializations/deep-learning) course on Coursera*
+   Viết hàm đánh giá evaluationFunction trả về số điểm nếu pacman đi vào vị trí đó. Nhưng ở đây sẽ khó hơn vì bản đồ có nhiều chướng ngại vật
+   
+   Cách làm:
+   - Ta sẽ xét nhiều yếu tố như : số thức ăn còn lại, số viên năng (viên trắng to), số lượng ma còn lại, khoảng cách giữa pacman và thức găn gần nhất, khoảng cách giữa pacman và ma gần nhất.
+   
+  "[***Code câu hỏi thứ 5 tại đây***](https://github.com/kingkong135/1-1920-INT3401/blob/2d976fac77a7762e7195bbd11085956b0da82a30/P2%20Games/multiagent/multiAgents.py#L288)"
+   
+   
