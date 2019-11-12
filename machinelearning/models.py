@@ -299,7 +299,7 @@ class LanguageIDModel(object):
         "*** YOUR CODE HERE ***"
         batch_size = 100
         valid_acc = 0
-        while valid_acc < .82:
+        while valid_acc < .90:
             for x, y in dataset.iterate_once(batch_size):
                 loss = self.get_loss(x, y)
                 grads = nn.gradients(loss, self.params)
